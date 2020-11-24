@@ -1,0 +1,65 @@
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-light-indigo elevation-4">
+    <!-- Brand Logo -->
+    <a href="" class="brand-link">
+      <img src="../../../../assets/images/PDH.png" alt="PDH" class="brand-image"
+        style="opacity: .8">
+      <span class="brand-text font-weight-light">CSAT</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image" style="padding-left: 8px;">
+          <div *ngIf="!identity.FOTO"
+            style=" color:#ffff; background-color: {{color}}; padding-right: 7px; padding-left: 7px; padding-top: 5px;
+            padding-bottom: 5px;">
+            <h4 style="margin-bottom: 0px;">{{iniciales}}</h4>
+          </div>
+           <div *ngIf="identity.FOTO">
+             <img [src]="identity.FOTO" alt="Perfil Usuario" class="brand-image"
+               style="opacity: .8">
+           </div>
+        </div>
+        <div class="info">
+          <a href="#" class="d-block">{{identity.PRIMER_NOMBRE}} {{identity.PRIMER_APELLIDO}}</a>
+
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <ng-container *ngFor="let item of menu">
+               <li class="nav-item has-treeview">
+                 <a href="" class="nav-link ">
+                   <i class="nav-icon {{item.ICONO}}"></i>
+                   <p>
+                     {{item.MODULO_DESCRIPCION}}
+                     <i class="right fas fa-angle-left"></i>
+                   </p>
+                 </a>
+                 <ng-container *ngFor="let opcion of item.OPCIONES">
+                    <ul class="nav nav-treeview">
+                      <li class="nav-item">
+                        <a routerLink="{{'/'+opcion.PATH}}" class="nav-link">
+                          <i class="fas fa-caret-right"></i>&nbsp;
+                          <p>{{opcion.OPCION_DESCRIPCION}}</p>
+                        </a>
+                      </li>
+                    </ul>
+                 </ng-container>   
+               </li>
+          </ng-container>
+         
+
+        
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>

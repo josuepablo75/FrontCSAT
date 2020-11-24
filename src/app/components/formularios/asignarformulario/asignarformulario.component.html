@@ -1,0 +1,99 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Asignar Formularios</h1>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-outline card-primary">
+                <div class="card-header">
+                  <h3 class="card-title tex"><strong>Asignacion de formulario</strong></h3>
+                </div>
+                <div class="card-body ">            
+                    <div class="form-group">
+                      <select class="form-control" style="width: 100%;" name="FORMULARIOS"
+                        id="FORMULARIOS" [(ngModel)]="formularioId"
+                        (change)="changeFormulario($event)"
+                        >
+                        <option *ngFor="let item of formularios" [value]="item.ID_FORMULARIO">
+                          {{item.NOMBRE}}
+                        </option>
+                      </select>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-outline">
+              <div class="card-header">
+                <h3 class="card-title tex"><strong>Lista de Usuarios disponibles</strong></h3>
+              </div>
+              <div class="card-body ">
+                <div class="form-group">
+                  <!-- <input type="text" class="form-control" style="margin-bottom: 10px;" placeholder="Buscar Usuario"> -->
+                  <button type="submit" class="btn btn-success btn-sm btn-block"
+                  style="margin-bottom: 3px;"
+                  (click)="AsignarUsuarios()">
+                    <i class="fas fa-angle-double-right"></i>
+                  </button>
+                  <select class="form-control" style="width: 100%;" name="FORMULARIOS" id="FORMULARIOS"
+                    [(ngModel)]="usuarios_disponibles" multiple>
+                    <option *ngFor="let item of usuarios" [ngValue]="item">
+                      {{item.PRIMER_NOMBRE + ' ' + item.SEGUNDO_NOMBRE + ' ' + item.PRIMER_APELLIDO + ' ' + item.SEGUNDO_APELLIDO }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-outline">
+              <div class="card-header">
+                <h3 class="card-title tex"><strong>Usuarios Asginados al formulario seleccionado</strong></h3>
+              </div>
+              <div class="card-body ">
+                <div class="form-group">
+                  <!-- <input type="text" class="form-control" style="margin-bottom: 10px;" placeholder="Buscar Usuarios asignadas"> -->
+                  <button type="submit" class="btn btn-danger btn-sm btn-block" style="margin-bottom: 3px;"
+                    (click)="DesAsignarUsuarios()">
+                    <i class="fas fa-angle-double-left"></i>
+                  </button>
+                  <select class="form-control" style="width: 100%;" name="FORMULARIOS" id="FORMULARIOS"
+                    [(ngModel)]="usuarios_asignados" multiple>
+                    <option *ngFor="let item of usuarios_con_asignacion" [ngValue]="item">
+                      {{item.PRIMER_NOMBRE + ' ' + item.SEGUNDO_NOMBRE + ' ' + item.PRIMER_APELLIDO + ' ' + item.SEGUNDO_APELLIDO }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

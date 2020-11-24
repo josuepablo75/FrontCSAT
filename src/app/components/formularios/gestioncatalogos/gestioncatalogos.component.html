@@ -1,0 +1,159 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Gestion de catalogos</h1>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-outline card-primary">
+              <div class="card-header">
+                <h3 class="card-title tex"><strong>Crear catalogo</strong></h3>
+              </div>
+              <div class="card-body">              
+                   <div class="form-group">
+                     <label style="font-weight: normal" for="TITULO">Titulo display</label>
+                     <input type="text" class="form-control" [(ngModel)]="titulocatalogo_display"
+                       placeholder="Ingrese el titulo display" id="TITULO_CATALOGO" required minlength="13">
+                   </div>
+                   <div class="form-group">
+                     <label style="font-weight: normal" for="TITULO">Titulo del
+                       catalogo</label>
+                     <input type="text" class="form-control" [(ngModel)]="titulocatalogo"
+                       placeholder="Ingrese el titulo del catalogo" id="TITULO" required minlength="13">
+                   </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="tituloPregunta">Nombre de la tabla catalogo</label>
+                      <input type="text" [(ngModel)]="nombreCatalogo" class="form-control"
+                        placeholder="Ingrese nombre del catalogo ejemlo: DTC_CATALOGO" required
+                        minlength="13">
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label>Seleccione nivel de catalogo</label>
+                      <select class="form-control select2bs4" style="width: 100%;" name="NIVEL"
+                         [(ngModel)]="nivelseleciconado">
+                        <option *ngFor="let item of niveles" [value]="item.P_ID_NIVEL">
+                          {{item.P_TITULONIVEL}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                <button type="submit" class="btn btn-outline-warning" (click)="AgregarCatalogo()">Agregar
+                    &nbsp;<i class="fas fa-plus-circle"></i></button>
+                </div>
+
+                <div class="row">                
+                    <ul *ngIf="catalogos.P_CATALAGO_NOMBRE">       
+                      <li> {{catalogos.P_CATALAGO_NOMBRE}} <button type="button" class="btn btn-tool"
+                          (click)="ReiniciarLista()"><i class="fas fa-times"></i></button>
+                        <ul>
+                           
+                          <li *ngFor="let item of catalogos.P_CATALOOGO_HIJOS">{{item.P_CATALAGO_NOMBRE}}
+                            <ul>
+
+                              <li *ngFor="let item2 of item.P_CATALOOGO_HIJOS">{{item2.P_CATALAGO_NOMBRE}} 
+                                   <ul>
+
+                                     <li *ngFor="let item3 of item2.P_CATALOOGO_HIJOS">{{item3.P_CATALAGO_NOMBRE}}</li>
+                                   </ul>
+                              </li>
+                            </ul>
+
+                          </li>
+                        </ul>
+                      </li>
+                      
+                    </ul>
+                </div>
+
+                 <div class="row">
+                   <div class="col-md-12">
+                    
+                      
+                         <button type="submit" class="btn btn-primary btn-sm btn-block" 
+                            (click)="Registrar()"
+                         >Registrar</button>
+                   
+                   </div>
+                 </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <div class="row">
+         <div class="col-md-2"></div>
+        <div class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Catalogos registrados</h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body table-responsive p-0">
+              <table class="table table-hover text-nowrap">
+                <thead>
+                  <tr>
+                  
+                    <th>Nombre del catalogo</th>
+                    <th>Tabla Padre</th>
+                    <th>Fecha registro</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of catalogos_registrados | paginate: {
+                      id: 'listing_pagination', 
+                      itemsPerPage: 5, 
+                      currentPage: page, 
+                      totalItems: totalRecords
+                    }">
+                    
+                    <td>{{item.P_CATALOGO_DISPLAY}}</td>
+                    <td>{{item.P_CATALAGO_NOMBRE}}</td>
+                    <td>{{item.P_FECHA_REGISTRO}}</td>
+                    <td>
+                      <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="top"
+                        title="Deshabilitar catalogo" (click)="ActualizarEstado(item.P_ID_CATALOGO, 0)"
+                        *ngIf="Estado(item.P_ESTADO)"><i class="fas fa-times"></i></button>
+
+                      <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top"
+                        title="Habilitar catalogo" (click)="ActualizarEstado(item.P_ID_CATALOGO, 1)"
+                        *ngIf="!Estado(item.P_ESTADO)"><i class="fas fa-check"></i></button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+                <div>
+                  <pagination-controls id="listing_pagination" maxSize="5" directionlinks="true"
+                    (pageChange)="page =  $event">
+                  </pagination-controls>
+                </div>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+
+
+  </div>
+</section>

@@ -1,50 +1,87 @@
-<div class="layout">
 
-    <div class="container d-flex flex-column">
-        <div class="row align-items-center justify-content-center no-gutters min-vh-100">
-
-            <div class="col-12 col-md-5 col-lg-4 py-8 py-md-11">
-
-                <!-- headline-->
-                <!--prueba para modificar el archivo desde la interfaz-->
-                <h1 class="font-bold text-center">BIENVENIDO</h1>
-
-                <!-- Text -->
-                <p class="text-center mb-6">Bienvenid@s a MessenTwit.</p>
-
-                <!-- Form -->
-                <form class="mb-6" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
-                    <!-- Email -->
-                    <div class="form-group">
-                        <label for="email" class="sr-only">Correo Electronico</label>
-                        <input type="email" class="form-control form-control-lg" id="email" placeholder="Correo electrónico" #email="ngModel" name="email" [(ngModel)]="user.email" required>
-                    </div>
-
-                    <!-- Password -->
-                    <div class="form-group">
-                        <label for="password" class="sr-only">Contraseña</label>
-                        <input type="password" class="form-control form-control-lg" id="password" placeholder="Contraseña" #password="ngModel" name="password" [(ngModel)]="user.password" required>
-                    </div>
-
-                    <div class="form-group d-flex justify-content-between">
-                        <div class="custom-control custom-checkbox">
-                            <input type="checkbox" class="custom-control-input" checked="" id="checkbox-remember">
-                            <label class="custom-control-label" for="checkbox-remember">Recordarme</label>
-                        </div>
-                        <a href="./password-reset.html">Olvidaste tu contraseña</a>
-                    </div>
-
-                    <!-- Submit -->
-                    <button class="btn btn-lg btn-block btn-primary" type="submit">INICIAR</button>
-                </form>
-
-                <!-- Text -->
-                <p class="text-center">
-                    No tienes cuenta aun? <a [routerLink]="['/registro']">Registrarse</a>.
-                </p>
-
-            </div>
-        </div> <!-- / .row -->
+<div class="wrapper back">
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-5">
     </div>
 
-</div><!-- .layout --> 
+  </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+
+    <form role="form" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+      <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <div class="card card-outline">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-8 text-center">
+                         <img src="../../../../assets/images/pdh-logo.png" alt="PDH" class="brand-image"
+                           style="opacity: .8">
+                    </div>
+                   
+                </div>
+                <div class="text-center">
+                    
+                          <h4 class="text-secondary"><strong>Sistema de Alerta Temprana</strong></h4>
+
+                </div>
+                <div class="text-center">
+                  
+                    <h1 class="text-info"><strong>CSAT</strong></h1>
+                </div>
+                <div class="row mb-1">
+
+                </div>
+ 
+             
+            </div>
+            <div class="card-body">
+
+                <div class="text-center">
+                  <h4 class="text-secondary"><strong>Inicio de Sesión</strong></h4>
+                </div>
+                <div class="row mb-4">
+
+                </div>
+                 <div class="form-group">
+                   <label for="username" class="sr-only">Username</label>
+                   <input type="username" class="form-control form-control-lg" id="username"
+                     placeholder="Ingrese nombre de Usuario" #username="ngModel" name="username" [(ngModel)]="user.username"
+                     required>
+                 </div>
+                                 <div class="row mb-2">
+
+                                 </div>
+                 
+                   <div class="form-group">
+                     <label for="password" class="sr-only">Contraseña</label>
+                     <input type="password" class="form-control form-control-lg" id="password" placeholder="Ingrese contraseña"
+                       #password="ngModel" name="password" [(ngModel)]="user.password" required>
+                   </div>
+
+                      <div class="row mb-3">
+
+                      </div>
+                
+                  <button type="submit" class="btn btn-primary btn-block"> <strong>
+                            Ingresar
+                  </strong></button>
+               
+            </div>
+          </div>
+           
+        </div>
+        
+
+      </div>
+    </form>
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>

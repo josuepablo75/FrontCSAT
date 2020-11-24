@@ -1,0 +1,106 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Formularios</h1>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lista de formularios</h3>
+            <!--
+             <div class="card-tools">
+               <div class="input-group input-group-sm" style="width: 150px;">
+                 <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                 <div class="input-group-append">
+                   <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                 </div>
+               </div>
+             </div> -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+              <thead>
+                <tr>
+                  <th>Titulo de formulario</th>
+                  <th>Descripcion</th>
+                  <th>Fecha registro</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of formularios | paginate: {
+                      id: 'listing_pagination', 
+                      itemsPerPage: 5, 
+                      currentPage: page, 
+                      totalItems: totalRecords
+                    }">
+                  <td>{{item.NOMBRE}}</td>
+                  <td>{{item.DESCRIPCION}}</td>
+                  <td>{{item.FECHA_REGISTRO}}</td>
+                  <td>
+                    <button type="submit" class="btn btn-warning" data-toggle="tooltip" data-placement="top"
+                      title="Editar formulario" 
+                       [routerLink]="['/actualizarformulario',item.ID_FORMULARIO]"
+                      *ngIf="Estado(item.ESTADO)">
+                    <i class="fas fa-edit"></i>
+                    </button>
+                    &nbsp;&nbsp;&nbsp;
+                    <button type="submit" class="btn btn-danger"
+                      title="Deshabilitar formulario" data-toggle="modal" data-target="#modal-default"
+                      *ngIf="Estado(item.ESTADO)"
+                      (click)="setFormularioid(item.ID_FORMULARIO)"
+                      ><i class="fas fa-trash"></i></button>
+
+                    <button type="submit" class="btn btn-success" data-toggle="tooltip" data-placement="top"
+                      title="Habilitar formulario" 
+                      (click)="actualizarEstadoFormulario(item.ID_FORMULARIO, 1)"
+                      *ngIf="!Estado(item.ESTADO)"><i class="fas fa-undo"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <pagination-controls id="listing_pagination" maxSize="5" directionlinks="true"
+                (pageChange)="page =  $event">
+              </pagination-controls>
+            </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-default">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Deshabilitar Formulario</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>¿Desea inhabilitar este formulario?</p>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-danger"
+              (click)="InactivarFormulario()" data-dismiss="modal">Guardar Cambios</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

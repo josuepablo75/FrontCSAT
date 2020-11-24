@@ -3,6 +3,7 @@ import { HttpClient,HttpHeaders } from '@angular/common/http'
 import { observable, from, Observable } from 'rxjs'
 import { GLOBAL } from './GLOBAL'
 import { User } from '../models/User'
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -15,33 +16,109 @@ export class UserService {
   public identity
 
   constructor(
-    private _http: HttpClient
+    private _http: HttpClient, 
+    private _router: Router,
   ) { 
     this.url = GLOBAL.url
    }
 
    registrar (user):Observable<any>{
-    var obj = {
-      nombre : user.nombre,
-      email : user.email,
-      password : user.password
-    }
+  
+     const headers = new HttpHeaders({
+       'Content-Type': 'application/json',
+       'Authorization': 'Bearer ' + localStorage.getItem('token')
+     })
 
-    let headers = new HttpHeaders().set('Content-Type','application/json')
-    let x = this._http.post(this.url+'registrar',obj,{headers: headers})
+    let x = this._http.post(this.url +'usuarios/registro', JSON.stringify(user),{headers: headers})
     return x
    }
 
-   login(user, gettoken = null):Observable<any> {
-     let json = user
-     if (gettoken!=null){
-        user.gettoken = true
-     }
 
-     let headers = new HttpHeaders().set('content-type','application/json')
-     return this._http.post(this.url+'login',json,{headers: headers})
+  actualizar(user): Observable<any> {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    })
+    
+    let x = this._http.post(this.url + 'usuarios/actualizarusuario', JSON.stringify(user), { headers: headers })
+    return x
+  }
+
+  actualizarestado(user): Observable<any> {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    })
+
+    let x = this._http.post(this.url + 'usuarios/actualizarestado', JSON.stringify(user), { headers: headers })
+    return x
+  }
+
+   login(user, gettoken = null):Observable<any> {
+      let json = user
+      if (gettoken!=null){
+        user.gettoken = true
+      } 
+
+      let headers = new HttpHeaders().set('content-type','application/json')
+      return this._http.post(this.url +'auth/login',json,{headers: headers})
 
    }
+
+  logout(user): Observable<any> {       
+    let headers = new HttpHeaders().set('content-type', 'application/json')
+    return this._http.post(this.url + 'auth/logout', JSON.stringify(user), { headers: headers })
+  }
+
+  get_menu(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    })
+    return this._http.get(this.url + 'usuarios/menu', { headers: headers })
+  }
+
+  get_menu_usuario(id_usuario): Observable<any> {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    })
+
+    return this._http.get(this.url + 'usuarios/menu_opciones/' + id_usuario, { headers: headers })
+  }
+
+  get_tipo(): Observable<any> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    })
+    return this._http.get(this.url + 'usuarios/tipo', { headers: headers })
+  }
+
+  get_usuarios(estado): Observable<any> {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' +localStorage.getItem('token')
+    })
+
+    //let headers = new HttpHeaders().set('content-type', 'application/json', 'Authorization')
+    return this._http.get(this.url + 'usuarios/usuarios/'+estado, { headers: headers })
+  }
+
+  get_usuarios_byId(id_usuario): Observable<any> {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + localStorage.getItem('token')
+    })
+
+    //let headers = new HttpHeaders().set('content-type', 'application/json', 'Authorization')
+    return this._http.get(this.url + 'usuarios/actualizar/' + id_usuario, { headers: headers })
+  }
 
    get_users():Observable<any>{
       let headers = new HttpHeaders().set('content-type','application/json')
@@ -89,12 +166,39 @@ export class UserService {
     let identity = JSON.parse( localStorage.getItem('identity'))
     if (identity){
       this.identity = identity
+      
+      this.get_usuarios_byId(this.identity.ID_USUARIO).subscribe(
+        response => {
+         
+        },
+        err => {
+          if (err.status === 401) {
+
+            this.logout(this.identity.ID_USUARIO).subscribe(
+              response => {
+                localStorage.removeItem('token')
+                localStorage.removeItem('identity')
+                localStorage.removeItem('color')
+                this._router.navigate(['login'])
+              },
+              error => {
+              }
+            )
+          }
+
+        }
+      )
+
     }else
     {
       this.identity = null
     }
     return identity
+
+    
    }
+
+  
    
    update_config (data):Observable<any>{
     console.log(data);

@@ -1,47 +1,276 @@
-<div class="layout">
-
-    <div class="container d-flex flex-column">
-        <div class="row align-items-center justify-content-center no-gutters min-vh-100">
-
-            <div class="col-12 col-md-5 col-lg-4 py-8 py-md-11">
-
-                <!-- Heading -->
-                <h1 class="font-bold text-center">Registro</h1>
-
-                <!-- Text -->
-                <p class="text-center mb-6">Ingresa tus datos para poder conversar.</p>
-
-                <!-- Form -->
-                <form class="mb-6" #registroForm="ngForm" (ngSubmit)="onSubmit(registroForm)">
-
-                    <!-- Name -->
-                    <div class="form-group">
-                        <label for="name" class="sr-only">Nombres</label>
-                        <input type="text" class="form-control form-control-lg" id="name" placeholder="Ingresa tu nombre"
-                        #nombre="ngModel" name="nombre" [(ngModel)]="user.nombre"> 
-                    </div>
-
-                    <!-- Email -->
-                    <div class="form-group">
-                        <label for="email" class="sr-only">Correo Electrónico</label>
-                        <input type="email" class="form-control form-control-lg" id="email" placeholder="Ingresa tu correo electrónico"
-                        #email="ngModel" name="email" [(ngModel)]="user.email">
-                    </div>
-
-                    <!-- Password -->
-                    <div class="form-group">
-                        <label for="password" class="sr-only">Contraseña</label>
-                        <input type="password" class="form-control form-control-lg" id="password" placeholder="Ingresa tu contraseña"
-                        #password="ngModel" name="password" [(ngModel)]="user.password">
-                    </div>
-
-                    <!-- Submit -->
-                    <button class="btn btn-lg btn-block btn-primary" type="submit">Registrarme</button>
-                </form>
-
-   
-            </div>
-        </div> <!-- / .row -->
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Registro de Usuarios</h1>
+      </div>
     </div>
+  </div><!-- /.container-fluid -->
+</section>
 
-</div><!-- .layout -->
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    
+ <form role="form" #registroForm="ngForm" (ngSubmit)="onSubmit(registroForm)">
+
+ 
+    <div class="row">
+
+      <div class="col-md-6"> 
+        <div class="card card-outline card-primary">
+          <div class="card-header">
+            <h3 class="card-title tex"><strong>Información General</strong></h3>
+             <div class="card-tools">
+               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                   class="fas fa-minus"></i></button>
+              
+             </div>
+          </div>       
+            <div class="card-body">
+
+                <div class="form-group">
+                  <label style="font-weight: normal" for="PRIMER_NOMBRE">* CUI</label>
+                  <input type="text" class="form-control"
+                    [ngClass]=" CUI.invalid && ( CUI.touched) ?
+                  'is-invalid':'' || CUI.valid ? 'is-valid':''" id="CUI"
+                    placeholder="Ingrese numero de identificación" #CUI="ngModel" name="CUI"
+                    [(ngModel)]="user.CUI" required minlength="13">
+                </div>
+
+              <div class="form-group">
+                <label style="font-weight: normal" for="PRIMER_NOMBRE">* Primer
+                  Nombre</label>
+                <input type="text" class="form-control"
+                  [ngClass]=" PRIMER_NOMBRE.invalid && (PRIMER_NOMBRE.touched) ?
+                  'is-invalid':'' || PRIMER_NOMBRE.valid ? 'is-valid':''"
+                  id="PRIMER_NOMBRE"
+                  placeholder="Ingrese primer nombre"
+                  #PRIMER_NOMBRE="ngModel" name="PRIMER_NOMBRE" [(ngModel)]="user.PRIMER_NOMBRE" required minlength="5">
+                </div> 
+
+              <div class="form-group">
+                <label style="font-weight: normal" for="SEGUNDO_NOMBRE">Segundo Nombre</label>
+                <input type="text" class="form-control" id="SEGUNDO_NOMBRE" placeholder="Ingrese segundo nombre" 
+                 #SEGUNDO_NOMBRE="ngModel" name="SEGUNDO_NOMBRE" [(ngModel)]="user.SEGUNDO_NOMBRE">
+              </div>
+               <div class="form-group">
+                 <label style="font-weight: normal"  for="exampleInputPRIMER_APELLIDOEmail1">* Primer Apellido</label>
+                 <input type="text" class="form-control"
+                   [ngClass]="PRIMER_APELLIDO.invalid && (PRIMER_APELLIDO.dirty || PRIMER_APELLIDO.touched) ?
+                  'is-invalid':'' || PRIMER_APELLIDO.valid ? 'is-valid':''" id="PRIMER_APELLIDO"
+                   placeholder="Ingrese primer apellido" #PRIMER_APELLIDO="ngModel" name="PRIMER_APELLIDO"
+                   [(ngModel)]="user.PRIMER_APELLIDO" required minlength="5" >
+               </div>
+
+               <div class="form-group">
+                 <label style="font-weight: normal" for="SEGUNDO_APELLIDO" >Segundo Apellido</label>
+                 <input type="text" class="form-control" id="SEGUNDO_APELLIDO" placeholder="Ingrese segundo apellido"
+                  #SEGUNDO_APELLIDO="ngModel" name="SEGUNDO_APELLIDO"
+                  [(ngModel)]="user.SEGUNDO_APELLIDO">
+               </div>
+
+               <div class="form-group">
+                  <label style="font-weight: normal" >Genero</label>
+                 <div class="radio">
+                   <label>
+                     <input type="radio" name="GENERO" id="GENERO" value="M" #GENERO="ngModel"
+                       name="GENERO" [(ngModel)]="user.GENERO">
+                     Masculino
+                   </label>
+                 </div>
+                 <div class="radio">
+                   <label>
+                     <input type="radio" name="GENERO" id="GENERO" value="F" #GENERO="ngModel" name="GENERO"
+                       [(ngModel)]="user.GENERO">
+                     Femenino
+                   </label>
+                 </div>
+               </div>
+
+               <div class="form-group">
+                 <label style="font-weight: normal" for="FECHA_NACIMIENTO">Fecha de Nacimiento</label>
+                 <input type="date" class="form-control" id="FECHA_NACIMIENTO" placeholder=""
+                   #FECHA_NACIMIENTO="ngModel" name="FECHA_NACIMIENTO" [(ngModel)]="user.FECHA_NACIMIENTO">
+               </div>
+
+               <div class="form-group">
+                <div class="upload-btn-wrapper">
+                  <label style="font-weight: normal" for="file">Foto de perfil 
+                  </label>
+                  <br>
+                  <button class="btn btn-outline-primary">Seleecionar archivo <i class="far fa-images"></i></button>
+                  <input type="file" name="file" (change)="SubirImagen($event.target.files)" />
+                  
+                </div>
+               </div>
+              
+                <div class="form-group">
+                  <div class="row">
+                    <div class="col-2">
+                            
+                    </div>
+                    <div class="col-8 text-center">
+                       
+                        <div *ngIf="imageUrl">
+                          <div class="card-header" style="border-bottom:none;">
+                            <div class="card-tools">
+                              <button type="button" class="btn btn-tool"><i
+                                  class="fas fa-times"
+                                  (click)="ImageReset()"
+                                  ></i></button>
+                            </div>
+                            <div >
+                              <img width="80%"
+                                style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); border-radius:10px;"
+                                [src]="imageUrl" class="image">
+                            </div>
+                          </div>
+                          
+                        </div>
+                    </div>
+
+                  </div>
+                  
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <!-- general form elements disabled -->
+        <div class="card card-outline card-primary">
+          <div class="card-header">
+            <h3 class="card-title"><strong> Creedenciales de acceso </strong></h3>
+            
+             <div class="card-tools">
+               <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                   class="fas fa-minus"></i></button>
+               
+             </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <div class="form-group">
+              <label style="font-weight: normal" for="EMAIL">Correo Electronico</label>
+              <input type="email" class="form-control" id="EMAIL"
+                placeholder="Ingrese correo electronico" #EMAIL="ngModel" name="EMAIL"
+                [(ngModel)]="user.EMAIL">
+            </div>
+
+            <div class="form-group">
+              <label style="font-weight: normal" for="USERNAME">* Nombre de Usuario</label>
+              <input type="text" class="form-control"
+                [ngClass]=" USERNAME.invalid && (USERNAME.dirty || USERNAME.touched) ?
+                  'is-invalid':'' || USERNAME.valid ? 'is-valid':''" id="USERNAME"
+                placeholder="Ingrese nombre de usuario" #USERNAME="ngModel" name="USERNAME"
+                [(ngModel)]="user.USERNAME" required minlength="5">
+            </div>
+            <div class="form-group">
+              <label style="font-weight: normal" for="PASSWORD">* Contraseña</label>
+              <input type="password" class="form-control"
+                [ngClass]=" PASSWORD.invalid && (PASSWORD.dirty || PASSWORD.touched) ?
+                  'is-invalid':'' || PASSWORD.valid ? 'is-valid':''" id="PASSWORD" placeholder="Ingrese contraseña"
+                  #PASSWORD="ngModel" name="PASSWORD"
+                  [(ngModel)]="user.PASSWORD" required minlength="5">
+            </div>
+            <!--                 <div class="form-group">
+                    <label style="font-weight: normal" for="VERIFICAR_PASSOWRD">Verificar Contraseña</label>
+                    <input type="password" class="form-control" id="VERIFICAR_PASSOWRD"
+                    placeholder="Verifique contraseña">
+                </div> -->
+
+         
+
+
+          </div>
+          <!-- /.card-body -->
+        </div>
+        
+        <div class="card card-outline">
+          <div class="card-header">
+            <h3 class="card-title">
+              <strong>Asignación de permisos</strong>
+            </h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                  class="fas fa-minus"></i></button>
+             </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">      
+              <div class="row">
+                <div class="col-sm-12">
+
+                  
+                  <div class="form-group">
+                    <label>* Tipo de Usuario</label>
+                    <select class="form-control select2" [(ngModel)]="user.ID_TIPO_USUARIO"
+                      style="width: 100%;" name="ID_TIPO_USUARIO" required 
+                      (change)="getTipoUsuario($event)"
+                      >
+                      
+                      <option *ngFor="let item of tipo_usuario" [value]="item.ID_TIPO_USUARIO">
+                        {{item.NOMBRE}}
+                      </option>
+
+                   
+                    
+                    </select>
+                  
+                  </div>
+
+                  <div class="form-group" >    
+                     <ng-container *ngFor="let item of menu">
+                        <h5>{{item.MODULO_DESCRIPCION}}</h5>
+                        <ng-container *ngFor="let itemopciones of item.OPCIONES">
+                          <div class="form-check" >
+                            <input class="form-check-input" name="{{itemopciones.ID_OPCION}}"
+                              [(ngModel)]="itemopciones.CHECKED"
+                              id="{{itemopciones.ID_OPCION}}"
+                              [value]='itemopciones.ID_OPCION'
+                              type="checkbox"
+                              (change)="getOpciones($event, itemopciones.ID_OPCION)">
+                            <label class="form-check-label">{{itemopciones.OPCION_DESCRIPCION}}</label>
+                          </div>
+                        </ng-container>                       
+                        <br>
+                     </ng-container>
+                   
+             <!--        <div class="form-check">
+                      <input class="form-check-input" type="checkbox" checked>
+                      <label class="form-check-label">Usuario Normal</label>
+                    </div> -->
+                  </div>
+                </div>
+          
+              </div>
+                
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+        <!-- general form elements disabled -->
+        <!-- /.card -->
+      </div>
+       
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-outline">
+            <div class="card-header">
+                <button type="submit" class="btn btn-primary btn-sm btn-block">Registrar</button>
+            </div>
+            </div>
+        </div>
+    </div>
+           
+
+    </form>
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+

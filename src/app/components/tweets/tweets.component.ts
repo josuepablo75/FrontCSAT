@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as io from "socket.io-client";
+
 import { GLOBAL } from "../../services/GLOBAL";
 import {UserService} from "../../services/user.service"; 
 import {TweetService } from "../../services/tweet.service"; 
@@ -12,7 +12,6 @@ import {Router} from "@angular/router";
 })
 export class TweetsComponent implements OnInit {
 
-  public socket = io('http://localhost:4201');
   public identity;
   public url;
   public UsuarioId; 
@@ -33,77 +32,14 @@ export class TweetsComponent implements OnInit {
   ) {
     this.url = GLOBAL.url; 
     this.identity = this._userService.getIdentity();
-    this.UsuarioId = this.identity._id; 
+   // this.UsuarioId = this.identity._id; 
 
    }
 
   ngOnInit(): void {
     if(this.identity)
     {
-      this._userService.get_user(this.UsuarioId).subscribe(
-        response =>{
-          this.datos_user = response.user; 
-        }, 
-        err=>{
-
-        }
-      )
-
-      this._tweetService.get_count_follow(this.UsuarioId).subscribe(
-        response => {
-          this.count_follow = response.follows;
-        },
-        err => {
-
-        }
-      )
-
-      this._tweetService.get_count_seguidores(this.UsuarioId).subscribe(
-        response => {
-          this.count_seguidores = response.seguidores;
-        },
-        err => {
-
-        }
-      )
-
-      this._tweetService.get_tweets(this.UsuarioId).subscribe(
-        response => {
-          this.datos_publicaciones = response.tweets;
-        },
-        err => {
-
-        }
-      )
-
-
-      this._tweetService.get_follow(this.UsuarioId).subscribe(
-        response => {
-          this.datos_follow = response.users;
-        },
-        err => {
-
-        }
-      )
-
-      this._tweetService.get_seguidores(this.UsuarioId).subscribe(
-        response => {
-          this.datos_mis_seguidores = response.users;
-        },
-        err => {
-
-        }
-      )
-
-      this._tweetService.get_mis_tweets(this.UsuarioId).subscribe(
-        response => {
-          
-          this.datos_mis_tweets = response.tweets;
-        },
-        err => {
-
-        }
-      )
+      console.log("Bienvenido");
 
     }else{
       this._router.navigate(['']); 

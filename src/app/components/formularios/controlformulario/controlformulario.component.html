@@ -1,0 +1,101 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Formularios</h1>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-2"></div>
+      <div class="col-md-8">
+        <div class="row">
+          <div class="col-12">
+            <div class="card card-outline card-primary">
+              <div class="card-header">
+                <h3 class="card-title tex"><strong>Formulario</strong></h3>
+              </div>
+              <div class="card-body ">
+                <div class="form-group">
+                  <select class="form-control" style="width: 100%;" name="FORMULARIOS" id="FORMULARIOS"
+                    [(ngModel)]="formularioId" (change)="changeFormulario($event)">
+                    <option *ngFor="let item of formularios" [value]="item.ID_FORMULARIO">
+                      {{item.NOMBRE}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lista de Formularios</h3>
+            <!--
+             <div class="card-tools">
+               <div class="input-group input-group-sm" style="width: 150px;">
+                 <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                 <div class="input-group-append">
+                   <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                 </div>
+               </div>
+             </div> -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+              <thead>
+                <tr>
+                  <th>Numero de formulario contestado</th>
+                  <th>Usuario Registra</th>
+                  <th>Formulario</th>
+                  <th>Fecha registro</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of encuestas | paginate: {
+                      id: 'listing_pagination', 
+                      itemsPerPage: 5, 
+                      currentPage: page, 
+                      totalItems: totalRecords
+                    }">
+                  <td>{{item.P_ID_ENCUESTA}}</td>
+                  <td>{{item.P_USUARIO_NOMBRE}}</td>
+                  <td>{{item.P_FORMULARIO_NOMBRE}}</td>
+                  <td>{{item.P_FECHA_REGISTRO}}</td>
+                  <td>
+                    <button type="submit" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+                      *ngIf="Estado(item.P_CONFIRMAR_REGISTRO)"
+                      [routerLink]="['/verrespuestas', item.P_ID_FORMULARIO , item.P_ID_ENCUESTA]"
+                      title="Ver resultado formulario"><i class="fas fa-eye"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+             <div>
+               <pagination-controls id="listing_pagination" maxSize="5" directionlinks="true"
+                 (pageChange)="page =  $event">
+               </pagination-controls>
+             </div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+
+
+  </div>
+</section>

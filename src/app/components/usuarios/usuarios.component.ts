@@ -5,6 +5,7 @@ import { identity } from 'rxjs';
 import { Message } from "../../models/Message";
 import * as io from "socket.io-client";
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 interface HtmlInputEvent extends Event{
   target: HTMLInputElement & EventTarget
@@ -16,110 +17,85 @@ interface HtmlInputEvent extends Event{
   styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent implements OnInit {
-  public usuarios
-  public url
-  public user_select
-  public mensajes
+ 
   public identity
-  public de
-  public data_msm
-  public send_message
-  public socket = io('http://localhost:4201')
-  public msm_success = ''
-  public msm_seguir = 'SEGUIR'
+  public usuarios: any = {};  
+  public id_usuario: number; 
+  public totalRecords: number; 
+  public page: number = 1; 
 
   constructor(
     private _userService: UserService,
-    private _router: Router
+    private _router: Router, 
+    private toastr: ToastrService 
     ) {
-    this.url = GLOBAL.url
+ 
     this.identity = this._userService.getIdentity()
-    this.de = this.identity._id
-    console.log(this.de)
+
     } 
 
     
 
   ngOnInit(): void {
-    if (this.identity){
-    this.data_msm = new Message('','','','')
-    this._userService.get_users().subscribe(
+    this._userService.get_usuarios(0).subscribe(
       response => {
-        this.usuarios = response.users
+        this.usuarios = response;   
+        this.totalRecords = response.length;    
+      },
+      err => {
         
-      },
-      error =>{
-
       }
     )
-    this.socket.on('new-message', function(data){
-      var data_all ={
-        de: data.message.de,
-        para: data.message.para,
-        msm: data.message.msm,
-        createAt: data.message.createAt
-      }
-      
-      this.mensajes.push(data_all)
 
-    }.bind(this))
-    } else {
-      this._router.navigate([''])
-    }
+ 
+    
   }
 
-  listar(id){
-    this._userService.get_user(id).subscribe(
-      response =>{
-        this.user_select = response.user
-        this._userService.get_messages(this.de,id).subscribe(
-          response=>{
-            this.mensajes = response.messages
-          },
-          error => {
-            
-          }
-        )
+  actualizarUsuario(id_usuario){
+    this._router.navigateByUrl('actualizar/' + id_usuario)
+  }
 
+  actualizarEstadoUsuario(id_usuario, estado) {
+    var datos_deshabilitar: any = {};
+
+     datos_deshabilitar = {
+      ID_USUARIO: id_usuario,
+      ESTADO: estado
+    }
+
+    this._userService.actualizarestado(datos_deshabilitar).subscribe(
+      response => {
+        this.toastr.success(response.mensaje);
+        this.usuarios.forEach(element => {
+          if (element.ID_USUARIO === id_usuario)
+            {
+              element.ESTADO = estado; 
+            }
+        });
       },
-      error =>{
-
+      error => {
       }
     )
   }
 
-  onSubmit(followForm){
-    if(followForm.valid){
-      console.log(this.user_select._id)
-      console.log(this.de)
-
-
-      this._userService.get_follow_user({
-        follow: this.user_select._id,
-        seguidores: this.de
-        }).subscribe(
-          response => {
-
-            this.msm_success='SIGUIENDO'
-            this._userService.get_users().subscribe(
-              response => {
-                this.usuarios = response.users
-                this.socket.emit('save-users',this.usuarios)
-              },
-              error => {
-
-              }
-            )
-          },
-          error => {
-            
-          }  
-        );  
-    }
-    else
-    {
-
-    }
+  
+  Estado(estado){
+  if (estado === 1){
+    return true; 
+  }else{
+    return false; 
   }
+    
+  }
+
+  setUsuarioid(id_formulario) {
+    this.id_usuario = id_formulario;
+  }
+
+  InactivarUsuario() {
+    this.actualizarEstadoUsuario(this.id_usuario, 0);
+    this.id_usuario = 0;
+  }
+
 }
 

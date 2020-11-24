@@ -1,0 +1,963 @@
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Registro de formulario</h1>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-12">
+        <!-- Custom Tabs -->
+        <div class="card">
+          <div class="card-header d-flex p-0">
+            <h3 class="card-title p-3">Formulario</h3>
+            <ul class="nav nav-pills ml-auto p-2">
+              <li class="nav-item"><a class="nav-link active" href="#tab_0" 
+                data-toggle="tab">Formulario</a></li>
+
+              <ng-container *ngFor="let item of agrupaciones">
+                <li class="nav-item"><a class="nav-link" href="#{{item.P_NUM_TAB}}"
+                    [ngClass]="item.P_ESTADO === 0 ? 'not-active':'' || modoedicion ? 'not-active':''"
+                    data-toggle="tab">{{item.P_TITULO_A}}</a>
+                </li>
+              </ng-container>
+
+
+            </ul>
+          </div><!-- /.card-header -->
+          <div class="card-body">
+            <div class="tab-content">
+              <div class="tab-pane active" id="tab_0">
+
+                <div class="row">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-6">
+                    <div class="card card-outline card-primary">
+                      <div class="card-header">
+                        <h3 class="card-title tex"><strong>Información General</strong></h3>
+                        <div class="card-tools">
+                          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                              class="fas fa-minus"></i></button>
+                        </div>
+                      </div>
+                      <div class="card-body">
+
+                        <div class="form-group">
+                          <label style="font-weight: normal" for="Form.P_TITULO_F">Titulo de
+                            Formulario</label>
+                          <input type="text" class="form-control" name="Form.P_TITULO_F" id="Form.P_TITULO_F"
+                            placeholder="Ingrese el titulo del formulario" [(ngModel)]="Form.P_TITULO_F" required
+                            minlength="13">
+                        </div>
+
+                        <div class="form-group">
+                          <label style="font-weight: normal" for="Form.P_DESCRIPCION_F">Descripcion</label>
+                          <textarea class="form-control" name="Form.P_DESCRIPCION_F" id="Form.P_DESCRIPCION_F" rows="3"
+                            placeholder="Ingrese la descripcion del formulario"
+                            [(ngModel)]="Form.P_DESCRIPCION_F"></textarea>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-6">
+                    <div class="card ">
+                      <div class="card-header">
+                        <h3 class="card-title tex"><strong>Agrupaciones</strong></h3>
+                        <div class="card-tools">
+                          <button type="button" class="btn btn-tool" data-card-widget="collapse"><i
+                              class="fas fa-minus"></i></button>
+                        </div>
+                      </div>
+                      <div class="card-body">
+
+                        <div class="form-group">
+                          <label style="font-weight: normal" for="TITULO">Titulo de
+                            Agrupacion</label>
+                          <input type="text" class="form-control" placeholder="Ingrese el titulo de la agrupacion" id="TITULO" required
+                            minlength="13" name="TITULO" [(ngModel)]="titulo" >
+                        </div>
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-outline-warning"
+                          (click)="agregarAgrupacion(titulo)"
+                            >Agregar &nbsp;<i
+                              class="fas fa-plus-circle"></i></button>
+                        </div>
+                        <div class="row">
+
+
+                          <ng-container *ngFor="let item of agrupaciones">
+                            <div class="col-md-4">
+                              <div class="card" [ngClass]="item.P_ESTADO === 1 ? 'card-info':''">
+                                <div class="card-header">
+                                  <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" *ngIf="MostarActivar(item.P_ESTADO)"
+                                      (click)="ActivarAgrupacion(item.P_ID_AGRUPACION)"
+                                    >
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <button type="button" class="btn btn-tool" *ngIf="MostrarDesactivar(item.P_ESTADO)"
+                                      (click)="InactivarAgrupacion(item.P_ID_AGRUPACION)"><i class="fas fa-times"></i>
+                                    </button>
+                                  </div>
+                                  
+                                  <h4 class="card-title" *ngIf="item.P_MOSTRAR_TITULO"
+                                    [ngClass]="item.P_ESTADO === 0 ? 'not-active':'' || item.P_NUEVO === 1 ? 'not-active-agrup':'' "
+                                    (click)="handleClick($event, item.P_ID_AGRUPACION)">{{item.P_TITULO_A}}</h4>
+                                  <input type="text" class="form__field" name="AGRUPACION"
+                                    *ngIf="item.P_MOSTRAR_INPUT" [ngClass]="item.P_ESTADO === 1 ?
+                                    'color-texto-activo':'color-texto-inactivo'" style="border-bottom: none;"
+                                    [(ngModel)]="item.P_TITULO_AC" 
+                                    minlength="13" (keyup.escape)="Deshacer(item.P_ID_AGRUPACION)"
+                                    (keyup.enter)="EditarAgrupacion(item.P_ID_AGRUPACION)"
+                                    [disabled]="MostarActivar(item.P_ESTADO)">
+                                </div>
+
+                              </div>
+                            </div>
+                          </ng-container>
+
+                          <!-- /.card -->
+
+                        </div>
+
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-3"></div>
+                  <div class="col-md-6">
+                    <div class="card card-outline">
+                      <div class="card-header">
+                        <button type="submit" class="btn btn-primary btn-sm btn-block"
+                          (click)="Actualizar()"
+                          >Actualizar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+
+
+
+
+              <!-- /.tab-pane -->
+              <ng-container *ngFor="let item of agrupaciones">
+                <div class="tab-pane" id="{{item.P_NUM_TAB}}">
+                  <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-8">
+
+                      <div class="row">
+                        <div class="col-11">
+                          <div class="card card-outline card-primary">
+                            <div class="card-body ">
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label for="tituloPregunta">Titulo de la
+                                      pregunta</label>
+                                    <input type="text" class="form-control"
+                                      placeholder="Ingrese el titulo de la pregunta" required minlength="13"
+                                      [(ngModel)]="titulopregunta">
+                                  </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label>Seleccione tipo de pregunta</label>
+                                    <select class="form-control select2bs4" style="width: 100%;" name="TIPO_DATO"
+                                      [(ngModel)]="tipo_dato_texto" >
+                                      <option *ngFor="let item of tipo_dato" [value]="item.TIPO_DATO">
+                                        {{item.DESCRIPCION}}
+                                      </option>
+                                    </select>
+                                  </div>
+                                </div>
+
+
+                              </div>
+
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label for="tituloPregunta">Identificador</label>
+                                      <input type="text" class="form-control"
+                                        placeholder="Identifique la pregunta con una palabra" required minlength="3"
+                                        [(ngModel)]="identificador_texto">
+                                    </div>
+                                  </div>
+
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label>Catalogos predefinidos</label>
+                                      <select class="form-control select2bs4" style="width: 100%;" name="TIPO_DATO"
+                                        [(ngModel)]="tipo_pregunta_predefinida">
+                                        <option>
+
+                                        </option>
+                                        <option *ngFor="let item of preguntas_predefinidas" [value]="item.ID_CATALOGO">
+                                          {{item.TITULO_DISPLAY}}
+                                        </option>
+                                      </select>
+                                    </div>
+                                  </div>
+
+
+                                </div>
+                              <div class="row" *ngIf="mostrarSeleccion(tipo_dato_texto)">
+                                <div class="col-md-6">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <label for="">Ingrese Opciones</label>
+                                    </div>
+
+                                  </div>
+                                  <div class="row">
+
+                                    <div class="col-11" style="padding-right: 0px;">
+                                      <div class="form-group">
+                                        <input type="text" class="form__field" name="OPCION" [(ngModel)]="opcion"
+                                          required minlength="13">
+                                      </div>
+                                    </div>
+                                    <div class="col-1" style="padding-left: 0px;">
+                                      <div class="form-group">
+                                        <button type="button" class="btn btn-link" (click)="AgregarOpcion(opcion)"><i
+                                            class="fas fa-plus"></i></button>
+                                      </div>
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                              <div class="row" *ngIf="mostrarSeleccion(tipo_dato_texto)">
+                                <div class="col-md-6">
+
+                                  <ng-container *ngFor="let opcion of opciones">
+                                    <div class="row">
+                                      <div class="col-12">
+                                        <div class="form-group">
+                                          <div class="form-check">
+                                            <button type="button" class="btn btn-tool"><i class="fas fa-plus-circle"
+                                                (click)="HabilitarEnlazarPregunta(opcion.P_ID_OPCION)"></i></button>
+                                            <label class="form-check-label"
+                                            [ngClass]="opcion.P_ESTADO === 0 ? 'inactivar-opcion':''"
+                                            >{{opcion.P_TITULO_OPCION}}
+                                            </label>
+                                            <button type="button" class="btn btn-tool"
+                                              *ngIf="MostrarDesactivar(opcion.P_ESTADO)"
+                                              (click)="InactivarOpcion(opcion.P_ID_OPCION, item.P_ID_AGRUPACION)"
+                                            ><i class="fas fa-minus"
+                                                ></i></button>
+                                            <button type="button" class="btn btn-tool"
+                                              *ngIf="MostarActivar(opcion.P_ESTADO)"
+                                              (click)="ActivarOpcion(opcion.P_ID_OPCION)"><i
+                                                class="fas fa-undo"></i></button>
+                                          </div>
+
+                                        </div>
+                                        <div class="form-group" *ngIf="opcion.P_HABILITAR_AGREGAR">
+                                          <div class="row">
+                                            <div class="col-1">
+                                            </div>
+                                            <div class="col-8">
+                                              <select class="form-control" style="width: 100%;"
+                                                [(ngModel)]="opcion.P_PREGUNTA_SELECCIONADA" name="PREGUNTAS_SELECCION">
+                                                <option></option>
+                                                <option *ngFor="let pregunta of item.P_PREGUNTAS"
+                                                  [value]="pregunta.P_ID_PREGUNTA">
+                                                  {{pregunta.P_TITULO_P}}
+                                                </option>
+                                              </select>
+                                            </div>
+                                            <div class="col-1">
+                                              <button type="button" class="btn"><i class="fas fa-plus-circle"
+                                                  (click)="AsignarRelacion(opcion.P_ID_OPCION)"></i></button>
+                                            </div>
+
+                                          </div>
+                                        </div>                                        
+                                        <ng-container
+                                          *ngFor="let pregunta of opcion.P_PREGUNTA_RELACION">
+                                          <div
+                                            class="form-group"
+                                            style="margin-left: 2rem;">
+
+                                            <label [ngClass]="pregunta.P_ESTADO === 0 ? 'inactivar-opcion':''"
+                                              class="form-check-label">
+                                              {{pregunta.P_TITULO_P}}
+                                            </label>
+                                            <button type="button" class="btn btn-tool"
+                                              *ngIf="MostrarDesactivar(pregunta.P_ESTADO)"
+                                              (click)="InactivarPreguntaSeleccionada(pregunta.P_ID_PREGUNTA,
+                                              opcion.P_ID_OPCION, item.P_ID_AGRUPACION)"><i
+                                                class="fas fa-minus"></i></button>
+                                            <button type="button" class="btn btn-tool"
+                                              *ngIf="MostarActivar(pregunta.P_ESTADO)"
+                                              (click)="InactivarActivarPregunta(pregunta.P_ID_PREGUNTA,
+                                              opcion.P_ID_OPCION, 1)"><i
+                                                class="fas fa-undo"></i></button>
+                                          </div>
+                                        </ng-container>
+                                      </div>
+                                    </div>
+                                  </ng-container>
+
+
+                                </div>
+                              </div>
+
+                               <!-- SELECT -->
+                               <div class="row" *ngIf="mostrarSeleccion_select(tipo_dato_texto)">
+                                 <div class="col-md-6">
+                                   <div class="row">
+                                     <div class="col-12">
+                                       <label for="">Ingrese Opciones</label>
+                                     </div>
+
+                                   </div>
+                                   <div class="row">
+
+                                     <div class="col-11" style="padding-right: 0px;">
+                                       <div class="form-group">
+                                         <input type="text" class="form__field" name="OPCION" [(ngModel)]="opcion"
+                                           required minlength="13">
+                                       </div>
+                                     </div>
+                                     <div class="col-1" style="padding-left: 0px;">
+                                       <div class="form-group">
+                                         <button type="button" class="btn btn-link" (click)="AgregarOpcion(opcion)"><i
+                                             class="fas fa-plus"></i></button>
+                                       </div>
+
+                                     </div>
+                                   </div>
+
+                                 </div>
+                               </div>
+
+                               <div class="row" *ngIf="mostrarSeleccion_select(tipo_dato_texto)">
+                                 <div class="col-md-6">
+
+                                   <ng-container *ngFor="let opcion of opciones">
+                                     <div class="row">
+                                       <div class="col-12">
+                                         <div class="form-group">
+                                           <button type="button" class="btn btn-tool"><i class="fas fa-plus-circle"
+                                               (click)="HabilitarEnlazarPregunta(opcion.P_ID_OPCION)"></i></button>
+                                           <label class="form-check-label"
+                                            [ngClass]="opcion.P_ESTADO === 0 ? 'inactivar-opcion':''"
+                                           >{{opcion.P_TITULO_OPCION}}
+                                           </label>
+                                           <button type="button" class="btn btn-tool"
+                                             *ngIf="MostrarDesactivar(opcion.P_ESTADO)"
+                                             (click)="InactivarOpcion(opcion.P_ID_OPCION, item.P_ID_AGRUPACION)"><i
+                                               class="fas fa-minus"></i></button>
+                                           <button type="button" class="btn btn-tool"
+                                             *ngIf="MostarActivar(opcion.P_ESTADO)"
+                                             (click)="ActivarOpcion(opcion.P_ID_OPCION)"><i
+                                               class="fas fa-undo"></i></button>
+                                         </div>
+                                         <div class="form-group" *ngIf="opcion.P_HABILITAR_AGREGAR">
+                                           <div class="row">
+                                             <div class="col-1">
+                                             </div>
+                                             <div class="col-8">
+                                               <div class="form-group">
+                                                 <input type="text" class="form__field" name="OPCION"
+                                                   [(ngModel)]="opcion.P_TLO_OPCION_SEC" required minlength="13">
+                                               </div>
+                                             </div>
+                                             <div class="col-1">
+                                               <button type="button" class="btn"><i class="fas fa-plus-circle"
+                                                   (click)="AgregarOpcionSelect(opcion.P_ID_OPCION)"></i></button>
+                                             </div>
+
+                                           </div>
+
+
+
+
+                                         </div>
+                                         <!-- FOR -->
+                                         <ng-container *ngFor="let opciones of opcion.P_OPCIONES">
+                                           <div class="form-group" style="margin-left: 2rem;">
+
+                                             <label [ngClass]="opciones.P_ESTADO === 0 ? 'inactivar-opcion':''"
+                                              class="form-check-label">
+                                               {{opciones.P_TITULO_OPCION}}
+                                             </label>
+                                              <button type="button" class="btn btn-tool"
+                                                *ngIf="MostrarDesactivar(opciones.P_ESTADO)"
+                                                (click)="InactivarOpcionSeleccionada(opcion.P_ID_OPCION,
+                                                opciones.P_ID_OPCION, item.P_ID_AGRUPACION)"
+                                                ><i
+                                                  class="fas fa-minus"></i></button>
+                                              <button type="button" class="btn btn-tool"
+                                                *ngIf="MostarActivar(opciones.P_ESTADO)"
+                                                (click)="ActivarOpcionHijo(opcion.P_ID_OPCION,
+                                                opciones.P_ID_OPCION)"
+                                                ><i class="fas fa-undo"></i></button>
+                                           </div>
+                                         </ng-container>
+
+                                         <!-- FOR -->
+                                       </div>
+                                     </div>
+                                   </ng-container>
+
+
+
+                                 </div>
+                               </div>
+                               <!-- SELECT -->
+
+
+                              <div class="row">
+                                <div class="col-md-9"> </div>
+                                <div class="col-md-3">
+                                  <div class="form-group">
+                                    <label style="font-weight: normal" for="{{item.P_NUM_TAB+'check'}}">Campo
+                                      Obligatorio &nbsp;
+                                    </label>
+                                    <div class="icheck-primary d-inline">
+                                      <input type="checkbox" id="{{item.P_NUM_TAB+'check'}}" [value]='obligatorio'
+                                        [(ngModel)]="obligatorio" (change)="getObligatorio($event)">
+                                      <label for="{{item.P_NUM_TAB+'check'}}">
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-1">
+
+                          <div class="btn-group-vertical">
+                            <button type="button" class="btn btn-success"
+                              *ngIf="!modoedicion"
+                              (click)="agregarPreguntas(item.P_ID_AGRUPACION, titulopregunta,
+                              '')"
+                              ><i class="fas fa-plus-square"></i></button>
+                            <button type="button" class="btn btn-warning" *ngIf="modoedicion"><i
+                                class="far fa-save" (click)="GuardarCambios()"></i></button>
+                              <button type="button" class="btn btn-warning" *ngIf="modoedicion"
+                                (click)="DeshacerCambios()"
+                              >
+                                <i class="fas fa-undo"></i>
+                              </button>
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                    <ng-container *ngFor="let pregunta of item.P_PREGUNTAS">
+                      <div class="row">
+                        <div class="col-md-2">
+
+                        </div>
+                        <div class="col-md-8">
+                          <div class="card">
+                            <div class="card-header" [ngClass]="pregunta.P_MODO_EDICION ? 'modo-edicion':'' 
+                           || pregunta.P_ESTADO === 0 ? 'pregunta-inactiva': '' ">
+
+
+                              <div class="card-tools">
+
+
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                  (click)="ActualizarPregunta(pregunta.P_ID_PREGUNTA)" *ngIf="!modoedicion" [ngClass]="pregunta.P_NUEVO === 1 ? 'inactivar-edit-nuevo':'' 
+                              || pregunta.P_ESTADO === 0 ? 'inactivar-edit-nuevo':'' ">
+                                  <i class="far fa-edit"></i> </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                  *ngIf="!modoedicion" [ngClass]="pregunta.P_ESTADO === 0 ? 'inactivar-edit-nuevo':'' "
+                                  (click)="EliminarPregunta( item.P_ID_AGRUPACION,
+                              pregunta.P_ID_PREGUNTA)"><i class="fas fa-times"></i></button>
+
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse"
+                                  [ngClass]="pregunta.P_ESTADO === 1 ? 'inactivar-edit-nuevo':'' " (click)="ActivarPregunta( item.P_ID_AGRUPACION,
+                              pregunta.P_ID_PREGUNTA)"><i class="fas fa-undo"></i></button>
+
+
+                              </div>
+                              <div class="form-group">
+                                <label>{{pregunta.P_TITULO_P}}</label>
+                                <input *ngIf="mostrarInput(pregunta.P_TIPO_DATO)" type="{{pregunta.P_TIPO_DATO}}"
+                                  class="form-control" placeholder="Ingrese respuesta">
+
+                                <textarea class="form-control"
+                                  *ngIf="mostrarControlEspecial(pregunta.P_TIPO_DATO, 'textarea')" rows="3"
+                                  placeholder="Ingrese informacion ..."></textarea>
+
+                                <div class="form-group"
+                                  *ngIf="mostrarControlEspecial(pregunta.P_TIPO_DATO, 'datetime')">
+                                  <div class="input-group date" id="timepicker" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input"
+                                      data-target="#timepicker" />
+                                    <div class="input-group-append" data-target="#timepicker"
+                                      data-toggle="datetimepicker">
+                                      <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                    </div>
+                                  </div>
+                                  <!-- /.input group -->
+                                </div>
+
+                                <div class="form-group" *ngIf="mostrarControlEspecial(pregunta.P_TIPO_DATO, 'file')">
+                                  <div class="input-group">
+                                    <div class="custom-file">
+                                      <input type="file" class="custom-file-input" id="exampleInputFile">
+                                      <label class="custom-file-label" for="exampleInputFile">Seleccione
+                                        Archivo</label>
+                                    </div>
+                                    <div class="input-group-append">
+                                      <span class="input-group-text" id="">Subir</span>
+                                    </div>
+                                  </div>
+                                </div>
+
+
+                              </div>
+
+                              <div class="row" *ngIf="mostrarSeleccion(pregunta.P_TIPO_DATO)">
+
+                                <div class="col-md-6" *ngIf="MostrarTipoSeleccion(pregunta.P_TIPO_DATO, 'checkbox')">
+                                  <div *ngIf="!pregunta.P_CATALOGO_ESTADO">
+                                    <ng-container *ngFor="let opcion of pregunta.P_OPCIONES">
+                                      <div class="row">
+                                        <div class="col-12">
+                                          <div class="form-group">
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox">
+                                              <label class="form-check-label" 
+                                              [ngClass]="opcion.P_ESTADO === 0 ? 'inactivar-opcion':''"
+                                              >{{opcion.P_TITULO_OPCION}}
+                                              </label>
+
+                                            </div>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                  <div *ngIf="pregunta.P_CATALOGO_ESTADO">
+                                    <ng-container *ngFor="let catalogo of pregunta.P_PREGUNTA_CATALAGO.DATOS">
+                                      <div class="row">
+                                        <div class="col-12">
+                                          <div class="form-group">
+                                            <div class="form-check">
+                                              <input class="form-check-input" type="checkbox">
+                                              <label class="form-check-label">{{catalogo.P_DISPLAY}}
+                                              </label>
+
+                                            </div>
+
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </ng-container>
+                                  </div>
+                                </div>
+
+                                <div class="col-12" *ngIf="MostrarTipoSeleccion(pregunta.P_TIPO_DATO, 'radio')">
+                                     <div *ngIf="!pregunta.P_CATALOGO_ESTADO">
+                                       <ng-container *ngFor="let opcion of pregunta.P_OPCIONES">
+                                         <div class="row">
+                                           <div class="col-12">
+                                             <div class="form-group">
+                                               <div class="form-check">
+                                                 <input class="form-check-input" type="radio" name="radio1">
+                                                 <label 
+                                                 [ngClass]="opcion.P_ESTADO === 0 ? 'inactivar-opcion':''"
+                                                 class="form-check-label">{{opcion.P_TITULO_OPCION}}</label>
+                                               </div>
+                                             </div>
+                                           </div>
+                                         </div>
+
+                                         <ng-container *ngFor="let pregunta of opcion.P_PREGUNTA_RELACION">
+
+                                          <div
+                                            [ngClass]="pregunta.P_ESTADO === 0 ? 'inactivo':'' ">
+                                              <div class="form-group">
+                                                <label>{{pregunta.P_TITULO_P}}</label>
+                                                <input *ngIf="mostrarInput(pregunta.P_TIPO_DATO)"
+                                                  type="{{pregunta.P_TIPO_DATO}}" class="form-control"
+                                                  placeholder="Ingrese respuesta">
+
+                                                <textarea class="form-control"
+                                                  *ngIf="mostrarControlEspecial(pregunta.P_TIPO_DATO, 'textarea')" rows="3"
+                                                  placeholder="Ingrese informacion ..."></textarea>
+
+                                                <div class="form-group"
+                                                  *ngIf="mostrarControlEspecial(pregunta.P_TIPO_DATO, 'datetime')">
+                                                  <div class="input-group date" id="timepicker"
+                                                    data-target-input="nearest">
+                                                    <input type="text" class="form-control datetimepicker-input"
+                                                      data-target="#timepicker" />
+                                                    <div class="input-group-append" data-target="#timepicker"
+                                                      data-toggle="datetimepicker">
+                                                      <div class="input-group-text"><i class="far fa-clock"></i>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                  <!-- /.input group -->
+                                                </div>
+
+                                                <div class="form-group"
+                                                  *ngIf="mostrarControlEspecial(pregunta.P_TIPO_DATO, 'file')">
+                                                  <div class="input-group">
+                                                    <div class="custom-file">
+                                                      <input type="file" class="custom-file-input" id="exampleInputFile">
+                                                      <label class="custom-file-label" for="exampleInputFile">Seleccione
+                                                        Archivo</label>
+                                                    </div>
+                                                    <div class="input-group-append">
+                                                      <span class="input-group-text" id="">Subir</span>
+                                                    </div>
+                                                  </div>
+                                                </div>
+
+                                              </div>
+                                              <!-- Replica de pregunta -->
+                                              <div class="row" *ngIf="mostrarSeleccion_group(pregunta.P_TIPO_DATO)">
+
+                                                <div class="col-md-12"
+                                                  *ngIf="MostrarTipoSeleccion(pregunta.P_TIPO_DATO, 'checkbox')">
+                                                  <div *ngIf="!pregunta.P_CATALOGO_ESTADO">
+                                                    <ng-container *ngFor="let opcion of pregunta.P_OPCIONES">
+                                                      <div class="row">
+                                                        <div class="col-12">
+                                                          <div class="form-group">
+                                                            <div class="form-check">
+                                                              <input class="form-check-input" type="checkbox">
+                                                              <label class="form-check-label">{{opcion.P_TITULO_OPCION}}
+                                                              </label>
+
+                                                            </div>
+
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </ng-container>
+                                                  </div>
+                                                  <div *ngIf="pregunta.P_CATALOGO_ESTADO">
+                                                    <ng-container
+                                                      *ngFor="let catalogo of pregunta.P_PREGUNTA_CATALAGO.DATOS">
+                                                      <div class="row">
+                                                        <div class="col-12">
+                                                          <div class="form-group">
+                                                            <div class="form-check">
+                                                              <input class="form-check-input" type="checkbox">
+                                                              <label class="form-check-label">{{catalogo.P_DISPLAY}}
+                                                              </label>
+
+                                                            </div>
+
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </ng-container>
+                                                  </div>
+                                                </div>
+
+                                                <div class="col-md-12"
+                                                  *ngIf="MostrarTipoSeleccion(pregunta.P_TIPO_DATO, 'radio')">
+
+                                                  <div *ngIf="!pregunta.P_CATALOGO_ESTADO">
+                                                    <ng-container *ngFor="let opcion of pregunta.P_OPCIONES">
+                                                      <div class="row">
+                                                        <div class="col-12">
+                                                          <div class="form-group">
+                                                            <div class="form-check">
+                                                              <input class="form-check-input" type="radio" name="radio1">
+                                                              <label
+                                                                class="form-check-label">{{opcion.P_TITULO_OPCION}}</label>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+
+                                                    </ng-container>
+                                                  </div>
+
+                                                  <div *ngIf="pregunta.P_CATALOGO_ESTADO">
+                                                    <ng-container
+                                                      *ngFor="let catalogo of pregunta.P_PREGUNTA_CATALAGO.DATOS">
+                                                      <div class="row">
+                                                        <div class="col-12">
+                                                          <div class="form-group">
+                                                            <div class="form-check">
+                                                              <input class="form-check-input" type="radio" name="radio1">
+                                                              <label
+                                                                class="form-check-label">{{catalogo.P_DISPLAY}}</label>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                                      </div>
+                                                    </ng-container>
+                                                  </div>
+                                                </div>
+
+                                                <div class="col-md-12"
+                                                  *ngIf="MostrarTipoSeleccion(pregunta.P_TIPO_DATO, 'select')">
+                                                  <div class="row" *ngIf="!pregunta.P_CATALOGO_ESTADO">
+                                                    <div class="col-12">
+                                                      <div class="form-group">
+                                                        
+                                                        <select class="form-control select2bs4" style="width: 100%;"
+                                                          name="Select"
+                                                          (change)="SetOpcionesSelectRelacion($event,
+                                                          pregunta.P_ID_PREGUNTA,
+                                                          item.P_ID_AGRUPACION
+                                                          )"
+                                                          >
+                                                          <option></option>
+                                                          <option *ngFor="let opcion of pregunta.P_OPCIONES | filter:filterEstado"
+                                                            [value]="opcion.P_ID_OPCION">
+                                                            {{opcion.P_TITULO_OPCION}}
+                                                          </option>
+                                                        </select>
+                                                      </div>
+                                                        <div class="form-group" *ngIf="pregunta.P_LISTA_DOBLE">
+
+                                                          <select class="form-control select2bs4" style="width: 100%;"
+                                                            name="Select">
+                                                            <option *ngFor="let opcion of pregunta.P_OPCIONES_SELECT | filter:filterEstado"
+                                                              [value]="opcion.P_ID_OPCION">
+                                                              {{opcion.P_TITULO_OPCION}}
+                                                            </option>
+                                                          </select>
+                                                        </div>
+                                                    </div>
+                                                  </div>
+
+                                                  <!-- logica de catalogos -->
+                                                  <div class="row" *ngIf="pregunta.P_CATALOGO_ESTADO">
+                                                    <div class="col-12">
+
+
+                                                      <div class="form-group">
+                                                        <label>{{pregunta.P_PREGUNTA_CATALAGO.P_CATALOGO_TITULO}}</label>
+
+                                                        <select class="form-control select2bs4" style="width: 100%;"
+                                                          name="Select" (change)="SetearHijopcionrelacion($event,
+                                                                            pregunta.P_ID_PREGUNTA,
+                                                                            opcion.P_ID_OPCION,
+                                                                            item.P_ID_AGRUPACION)">
+                                                          <option></option>
+                                                          <option
+                                                            *ngFor="let catalogo of pregunta.P_PREGUNTA_CATALAGO.DATOS"
+                                                            [value]="catalogo.P_ID_ITEM">
+                                                            {{catalogo.P_DISPLAY}}
+                                                          </option>
+                                                        </select>
+                                                      </div>
+
+                                                      <ng-container *ngFor="let catalogo of
+                                                                    pregunta.P_PREGUNTA_CATALAGO.P_CATALOOGO_HIJOS">
+                                                        <label>{{catalogo.P_CATALOGO_TITULO}}</label>
+                                                        <div class="form-group">
+                                                          <select class="form-control select2bs4" style="width: 100%;"
+                                                            name="Select" (change)=" SetearHijo2seleccionrelacion($event,
+                                                                        pregunta.P_ID_PREGUNTA,
+                                                                        opcion.P_ID_OPCION,
+                                                                        item.P_ID_AGRUPACION)">
+                                                            <option></option>
+                                                            <option *ngFor="let catalogo of
+                                                                            catalogo.DATOS" [value]="catalogo.P_ID_ITEM">
+                                                              {{catalogo.P_DISPLAY}}
+                                                            </option>
+                                                          </select>
+                                                        </div>
+
+
+                                                        <ng-container *ngFor="let cathijo of
+                                                                        catalogo.P_CATALOOGO_HIJOS">
+                                                          <div class="form-group">
+                                                            <label>{{cathijo.P_CATALOGO_TITULO}}</label>
+
+                                                            <select class="form-control select2bs4" style="width: 100%;"
+                                                              name="Select">
+                                                              <option></option>
+                                                              <option *ngFor="let catalogo of
+                                                                        cathijo.DATOS" [value]="catalogo.P_ID_ITEM">
+                                                                {{catalogo.P_DISPLAY}}
+                                                              </option>
+                                                            </select>
+                                                          </div>
+                                                        </ng-container>
+
+                                                      </ng-container>
+
+
+
+                                                    </div>
+                                                  </div>
+
+                                                </div>
+                                              </div>
+                                              <!-- fin -->
+                                           </div>
+                                         </ng-container>
+
+                                       </ng-container>
+                                     </div>
+
+                                     <div *ngIf="pregunta.P_CATALOGO_ESTADO">
+                                       <ng-container *ngFor="let catalogo of pregunta.P_PREGUNTA_CATALAGO.DATOS">
+                                         <div class="row">
+                                           <div class="col-12">
+                                             <div class="form-group">
+                                               <div class="form-check">
+                                                 <input class="form-check-input" type="radio" name="radio1">
+                                                 <label class="form-check-label">{{catalogo.P_DISPLAY}}</label>
+                                               </div>
+                                             </div>
+                                           </div>
+                                         </div>
+                                       </ng-container>
+                                     </div>
+                                </div>
+
+                                
+                              </div>
+
+                              <div class="row" *ngIf="mostrarSeleccion_group(pregunta.P_TIPO_DATO)">
+
+                                <div class="col-md-12" *ngIf="MostrarTipoSeleccion(pregunta.P_TIPO_DATO, 'select')">
+                                  <div class="row" *ngIf="!pregunta.P_CATALOGO_ESTADO">
+                                    <div class="col-12">
+                                      <div class="form-group">
+                                        <select class="form-control select2bs4" style="width: 100%;" name="Select"
+                                        (change)="SetOpcionesSelect($event,
+                                        pregunta.P_ID_PREGUNTA,
+                                        item.P_ID_AGRUPACION
+                                        )"
+                                        >
+                                          <option></option>
+                                          <option *ngFor="let opcion of pregunta.P_OPCIONES | filter:filterEstado"
+                                            [value]="opcion.P_ID_OPCION">
+                                            {{opcion.P_TITULO_OPCION}}
+                                          </option>
+                                        </select>
+                                      </div>
+                                        <div class="form-group" *ngIf="pregunta.P_LISTA_DOBLE">
+                                          <select class="form-control select2bs4" style="width: 100%;" name="Select">
+                                            <option
+                                              *ngFor="let opcion of pregunta.P_OPCIONES_SELECT | filter:filterEstado"
+                                              [value]="opcion.P_ID_OPCION">
+                                              {{opcion.P_TITULO_OPCION}}
+                                            </option>
+                                          </select>
+                                        </div>
+                                    </div>
+                                  </div>
+                                  
+                                  <!-- logica de catalogos -->
+                                  <div class="row" *ngIf="pregunta.P_CATALOGO_ESTADO">
+                                    <div class="col-12">
+
+
+                                      <div class="form-group">
+                                        <label>{{pregunta.P_PREGUNTA_CATALAGO.P_CATALOGO_TITULO}}</label>
+
+                                        <select class="form-control select2bs4" style="width: 100%;" name="Select"
+                                          (change)="SetearHijo($event, pregunta.P_ID_PREGUNTA,
+                                                          item.P_ID_AGRUPACION)">
+                                          <option></option>
+                                          <option *ngFor="let catalogo of pregunta.P_PREGUNTA_CATALAGO.DATOS"
+                                            [value]="catalogo.P_ID_ITEM">
+                                            {{catalogo.P_DISPLAY}}
+                                          </option>
+                                        </select>
+                                      </div>
+
+                                      <ng-container *ngFor="let catalogo of
+                                                    pregunta.P_PREGUNTA_CATALAGO.P_CATALOOGO_HIJOS">
+                                        <label>{{catalogo.P_CATALOGO_TITULO}}</label>
+                                        <div class="form-group">
+                                          <select class="form-control select2bs4" style="width: 100%;" name="Select"
+                                            (change)="SetearHijo2($event, pregunta.P_ID_PREGUNTA,
+                                                        item.P_ID_AGRUPACION)">
+                                            <option></option>
+                                            <option *ngFor="let catalogo of
+                                                          catalogo.DATOS" [value]="catalogo.P_ID_ITEM">
+                                              {{catalogo.P_DISPLAY}}
+                                            </option>
+                                          </select>
+                                        </div>
+
+
+                                        <ng-container *ngFor="let cathijo of
+                                                      catalogo.P_CATALOOGO_HIJOS">
+                                          <div class="form-group">
+                                            <label>{{cathijo.P_CATALOGO_TITULO}}</label>
+
+                                            <select class="form-control select2bs4" style="width: 100%;" name="Select">
+                                              <option></option>
+                                              <option *ngFor="let catalogo of
+                                                        cathijo.DATOS" [value]="catalogo.P_ID_ITEM">
+                                                {{catalogo.P_DISPLAY}}
+                                              </option>
+                                            </select>
+                                          </div>
+                                        </ng-container>
+
+                                      </ng-container>
+
+
+
+                                    </div>
+                                  </div>
+
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+
+                </div>
+              </ng-container>
+
+            </div>
+            <!-- /.tab-content -->
+          </div><!-- /.card-body -->
+        </div>
+        <!-- ./card -->
+      </div>
+      <!-- /.col -->
+    </div>
+
+  </div>
+</section>
