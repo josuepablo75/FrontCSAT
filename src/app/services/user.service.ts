@@ -115,7 +115,7 @@ export class UserService {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ' + localStorage.getItem('token')
     })
-
+    
     //let headers = new HttpHeaders().set('content-type', 'application/json', 'Authorization')
     return this._http.get(this.url + 'usuarios/actualizar/' + id_usuario, { headers: headers })
   }
@@ -166,8 +166,7 @@ export class UserService {
     let identity = JSON.parse( localStorage.getItem('identity'))
     if (identity){
       this.identity = identity
-      
-      this.get_usuarios_byId(this.identity.ID_USUARIO).subscribe(
+     /* this.get_usuarios_byId(this.identity.ID_USUARIO).subscribe(
         response => {
          
         },
@@ -187,14 +186,13 @@ export class UserService {
           }
 
         }
-      )
+      )*/
 
     }else
     {
       this.identity = null
     }
     return identity
-
     
    }
 
